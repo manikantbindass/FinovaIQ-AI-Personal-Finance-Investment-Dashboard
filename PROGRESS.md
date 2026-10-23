@@ -58,3 +58,9 @@ Application milestone a7d06c2f6c0c02c00e0fe7f0006e96bf7721a194 was committed and
 A follow-up CI portability change approves the PostgreSQL fallback's existing platform-specific hydration scripts on Linux/macOS as well as Windows. This does not change application behavior. Compose syntax is checked separately from runtime: a valid file does not establish working Docker containers.
 
 Current local URLs: frontend http://localhost:3001, API http://localhost:4000/api/v1/health, Swagger http://localhost:4000/api/docs, optional AI http://localhost:8000/health. Start/restart commands are in SETUP.md. The AI health response reports provider_configured=false; demo copilot is the verified mode. The overall product roadmap remains incomplete as detailed above.
+
+## Vercel preparation follow-up
+
+The owner requested Vercel hosting and received the synthetic demo credentials. Added explicit Next.js/NestJS Vercel project configurations, an ignored .vercel directory, a same-origin API rewrite and deployment environment validation. Vercel builds now reject a missing/non-HTTPS/loopback API upstream, preventing publication of a frontend that calls the developer's localhost. Browser API calls default to /api/v1; the fixed server-only API_PROXY_URL supplies the upstream.
+
+Verification: four new deployment configuration tests passed (seven total web tests), strict type checks passed, lint passed, both production builds passed, frontend-proxied database health passed, and both complete Playwright workflows passed through the proxy (12.7 seconds). No hosted URL has been created. Vercel authentication and hosted PostgreSQL remain required; the official CLI device-login flow is waiting for the owner. Chrome is not connected to the chat's browser controls; the owner will complete login directly in Chrome. Do not commit device authorization codes, authentication tokens, or database credentials.
