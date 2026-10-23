@@ -50,3 +50,11 @@ Next milestone: deterministic transaction intelligence and budget notifications 
 - Both SQL migrations applied, seed ran, frontend returned HTTP 200, API health reported database connected, Swagger returned 200, and Python health reported ok with provider_configured=false.
 - Last production dependency scan reported no known vulnerabilities. Docker runtime/build, SMTP delivery, live AI calls, production deployment and Core Web Vitals/load/restore tests remain unverified.
 - Secret/runtime ignore checks and staged whitespace checks passed. Git push outcome will be recorded after the milestone commit; do not infer remote success from a local commit.
+
+## GitHub milestone
+
+Application milestone a7d06c2f6c0c02c00e0fe7f0006e96bf7721a194 was committed and successfully pushed to origin/main. `git ls-remote origin refs/heads/main` returned the identical hash. Git credentials worked despite the initially invalid GitHub CLI token; no reauthentication was needed for this push. The GitHub connector returned no workflow runs for that commit, so remote CI success is not claimed.
+
+A follow-up CI portability change approves the PostgreSQL fallback's existing platform-specific hydration scripts on Linux/macOS as well as Windows. This does not change application behavior. Compose syntax is checked separately from runtime: a valid file does not establish working Docker containers.
+
+Current local URLs: frontend http://localhost:3001, API http://localhost:4000/api/v1/health, Swagger http://localhost:4000/api/docs, optional AI http://localhost:8000/health. Start/restart commands are in SETUP.md. The AI health response reports provider_configured=false; demo copilot is the verified mode. The overall product roadmap remains incomplete as detailed above.
