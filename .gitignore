@@ -1,0 +1,16 @@
+node_modules/
+.next/
+dist/
+.turbo/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.log
+__pycache__/
+.venv/
+.local/
+*.tsbuildinfo
+.DS_Store

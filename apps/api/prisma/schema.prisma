@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+model User {
+  id String @id @default(uuid()) @db.Uuid
+  email String @unique
+  name String
+  passwordHash String
+  verified Boolean @default(false)
+  role String @default("USER")
+  createdAt DateTime @default(now())
+  sessions Session[]
+  tokens AuthToken[]
+  accounts Account[]
+  transactions Transaction[]
+  budgets Budget[]
+  goals Goal[]
+  portfolios Portfolio[]
+  conversations Conversation[]
+  notifications Notification[]
+  subscription Subscription?
+  audits AuditLog[]
+}
+model Session {
+  id String @id @default(uuid()) @db.Uuid
+  tokenHash String @unique
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@index([expiresAt])
+}
+model AuthToken {
+  id String @id @default(uuid()) @db.Uuid
+  tokenHash String @unique
+  kind String
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  expiresAt DateTime
+  @@index([userId,kind])
+}
+model Account {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  name String
+  type String @default("BANK")
+  currency String @default("INR")
+  openingBalance BigInt @default(0)
+  createdAt DateTime @default(now())
+  transactions Transaction[]
+  @@unique([id,userId])
+  @@index([userId])
+}
+model Category {
+  id String @id
+  name String @unique
+  transactions Transaction[]
+  budgets Budget[]
+}
+model Transaction {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  accountId String @db.Uuid
+  account Account @relation(fields:[accountId,userId],references:[id,userId],onDelete:Cascade)
+  categoryId String
+  category Category @relation(fields:[categoryId],references:[id])
+  amount BigInt
+  kind String
+  merchant String
+  note String @default("")
+  date DateTime @db.Date
+  recurring Boolean @default(false)
+  importKey String?
+  transferId String? @db.Uuid
+  createdAt DateTime @default(now())
+  @@unique([userId,importKey])
+  @@index([userId,date])
+  @@index([accountId,date])
+  @@index([userId,categoryId,date])
+}
+model Budget {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  categoryId String
+  category Category @relation(fields:[categoryId],references:[id])
+  amount BigInt
+  month String
+  @@unique([userId,categoryId,month])
+}
+model Goal {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  name String
+  target BigInt
+  saved BigInt @default(0)
+  monthlyContribution BigInt @default(0)
+  targetDate DateTime @db.Date
+  @@index([userId])
+}
+model Portfolio {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  name String
+  currency String @default("INR")
+  trades Trade[]
+  @@index([userId])
+}
+model Asset {
+  id String @id @default(uuid()) @db.Uuid
+  symbol String @unique
+  name String
+  trades Trade[]
+  prices MarketPrice[]
+}
+model Trade {
+  id String @id @default(uuid()) @db.Uuid
+  portfolioId String @db.Uuid
+  portfolio Portfolio @relation(fields:[portfolioId],references:[id],onDelete:Cascade)
+  assetId String @db.Uuid
+  asset Asset @relation(fields:[assetId],references:[id])
+  kind String
+  quantity Decimal @db.Decimal(20,8)
+  price BigInt
+  fees BigInt @default(0)
+  date DateTime @db.Date
+  createdAt DateTime @default(now())
+  @@index([portfolioId,date,createdAt])
+}
+model MarketPrice {
+  id String @id @default(uuid()) @db.Uuid
+  assetId String @db.Uuid
+  asset Asset @relation(fields:[assetId],references:[id],onDelete:Cascade)
+  price BigInt
+  asOf DateTime
+  source String
+  @@unique([assetId,source,asOf])
+}
+model Conversation {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  createdAt DateTime @default(now())
+  messages Message[]
+  @@index([userId,createdAt])
+}
+model Message {
+  id String @id @default(uuid()) @db.Uuid
+  conversationId String @db.Uuid
+  conversation Conversation @relation(fields:[conversationId],references:[id],onDelete:Cascade)
+  role String
+  content String
+  createdAt DateTime @default(now())
+  @@index([conversationId,createdAt])
+}
+model Notification {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  title String
+  body String
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+  @@index([userId,createdAt])
+}
+model Subscription {
+  userId String @id @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  tier String @default("FREE")
+  status String @default("DEMO")
+  aiUsage Int @default(0)
+  usageMonth String
+}
+model AuditLog {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  action String
+  resourceId String?
+  createdAt DateTime @default(now())
+  @@index([userId,createdAt])
+}
