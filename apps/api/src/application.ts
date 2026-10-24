@@ -1,10 +1,12 @@
 import "reflect-metadata";
+// Keep the reusable factory separate from Vercel's executable main.ts entrypoint.
 import "dotenv/config";
 import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
   HttpException,
+  INestApplication,
   Module,
 } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
@@ -75,11 +77,14 @@ class SafeErrors implements ExceptionFilter {
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-class AppModule {}
+export class AppModule {}
 export async function createApp() {
   const app = await NestFactory.create(AppModule, {
     logger: ["error", "warn", "log"],
   });
+  return configureApp(app);
+}
+export function configureApp(app: INestApplication) {
   const origin = process.env.WEB_ORIGIN ?? "http://localhost:3000";
   app.use(helmet());
   app.use(cookieParser());
@@ -89,11 +94,9 @@ export async function createApp() {
       !["GET", "HEAD", "OPTIONS"].includes(req.method) &&
       req.headers.origin !== origin
     ) {
-      res
-        .status(403)
-        .json({
-          error: { status: 403, message: "Trusted Origin header required" },
-        });
+      res.status(403).json({
+        error: { status: 403, message: "Trusted Origin header required" },
+      });
       return;
     }
     next();

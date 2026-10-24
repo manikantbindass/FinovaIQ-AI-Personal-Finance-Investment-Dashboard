@@ -2,7 +2,11 @@
 
 **Your Intelligent Financial Command Center**
 
-A functional personal-finance workspace with an original responsive navy interface, light mode, a PostgreSQL-backed NestJS API, and an optional FastAPI/OpenAI service. This is a verified local development milestone, not a production-ready financial service. See [PROGRESS.md](PROGRESS.md) for the remaining roadmap.
+**Live demo: [finovaiq.vercel.app](https://finovaiq.vercel.app)**
+
+Demo login: **demo@finovaiq.test / FinovaDemo2026!**. This shared demonstration contains fictional records; do not enter personal financial information.
+
+A functional personal-finance workspace with an original responsive navy interface, light mode, a PostgreSQL-backed NestJS API, and an optional FastAPI/OpenAI service. The public demo is a development milestone, not a production-ready financial service. See [PROGRESS.md](PROGRESS.md) for the remaining roadmap.
 
 ![FinovaIQ dashboard with fictional demonstration records](docs/screenshots/dashboard.png)
 
@@ -47,7 +51,7 @@ pnpm dev
 
 Frontend: [localhost:3001](http://localhost:3001) (3000 was occupied by Grafana). API: [localhost:4000/api/v1/health](http://localhost:4000/api/v1/health). Docs: [localhost:4000/api/docs](http://localhost:4000/api/docs). Optional AI: [localhost:8000/health](http://localhost:8000/health).
 
-Synthetic demo login: **demo@finovaiq.test / FinovaDemo2026!**. Register separately for an empty workspace. Seeding preserves an existing demo account. Never deploy the demo user publicly.
+Synthetic demo login: **demo@finovaiq.test / FinovaDemo2026!**. Local registration creates an empty workspace; hosted registration requires SMTP. Seeding preserves an existing demo account. Use the public fixture only with an isolated synthetic demo database.
 
 ## Checks
 
@@ -71,4 +75,4 @@ Production frontend: `pnpm --filter @finovaiq/web start` after build. Start comp
 
 INR/manual accounts only. No real bank connections, paid billing, live prices, corporate actions, background jobs or production monitoring. Live AI generation currently finishes before chunked SSE delivery; tool-calling orchestration is pending. Database aggregates currently load a user's history for balances; scale/performance targets are unmeasured. Charts use numeric approximations for display; persisted money and financial calculations use BigInt/Decimal.
 
-Repository: [FinovaIQ-AI-Personal-Finance-Investment-Dashboard](https://github.com/manikantbindass/FinovaIQ-AI-Personal-Finance-Investment-Dashboard). The original Git history is preserved. No alternate repository or production deployment is created.
+Repository: [FinovaIQ-AI-Personal-Finance-Investment-Dashboard](https://github.com/manikantbindass/FinovaIQ-AI-Personal-Finance-Investment-Dashboard). The original Git history is preserved. The hosted demonstration runs on Vercel with a separate synthetic PostgreSQL database.

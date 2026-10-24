@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 import type { INestApplication } from "@nestjs/common";
-import { createApp } from "./app";
+import { createApp } from "./application";
 import { Db } from "./db";
 import { categories, categoryId } from "./finance";
 describe.skipIf(process.env.RUN_INTEGRATION !== "1")(

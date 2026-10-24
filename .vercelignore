@@ -1,0 +1,16 @@
+.git
+.local
+.env
+.env.*
+**/.env
+**/.env.*
+**/node_modules
+**/.next
+**/dist
+**/.venv
+**/__pycache__
+test-results
+playwright-report
+coverage
+.agents
+skills-lock.json

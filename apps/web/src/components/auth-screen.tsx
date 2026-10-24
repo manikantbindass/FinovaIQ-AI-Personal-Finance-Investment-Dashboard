@@ -170,7 +170,7 @@ export function AuthScreen({ onSuccess }: { onSuccess: () => void }) {
           <div className="demo-notice">
             <Sparkles size={17} />
             <span>
-              Local workspace · synthetic demo data available
+              Demo workspace · synthetic data available
               <br />
               <small>No bank connection or paid API required.</small>
             </span>

@@ -64,3 +64,19 @@ Current local URLs: frontend http://localhost:3001, API http://localhost:4000/ap
 The owner requested Vercel hosting and received the synthetic demo credentials. Added explicit Next.js/NestJS Vercel project configurations, an ignored .vercel directory, a same-origin API rewrite and deployment environment validation. Vercel builds now reject a missing/non-HTTPS/loopback API upstream, preventing publication of a frontend that calls the developer's localhost. Browser API calls default to /api/v1; the fixed server-only API_PROXY_URL supplies the upstream.
 
 Verification: four new deployment configuration tests passed (seven total web tests), strict type checks passed, lint passed, both production builds passed, frontend-proxied database health passed, and both complete Playwright workflows passed through the proxy (12.7 seconds). No hosted URL has been created. Vercel authentication and hosted PostgreSQL remain required; the official CLI device-login flow is waiting for the owner. Chrome is not connected to the chat's browser controls; the owner will complete login directly in Chrome. Do not commit device authorization codes, authentication tokens, or database credentials.
+
+## Hosted deployment — 2026-10-24
+
+The owner authorized deployment and free plans only. Vercel Hobby projects finovaiq (Next.js) and finovaiq-api (NestJS) are linked to this GitHub repository. Neon finovaiq-demo-db was provisioned using the explicitly free free_v3 plan in Singapore after the owner accepted provider terms. No unrelated projects were deleted or modified; Portfolio and both SecureRx projects were preserved.
+
+- Frontend: https://finovaiq.vercel.app
+- API: https://finovaiq-api.vercel.app/api/v1/health
+- API docs: https://finovaiq-api.vercel.app/api/docs
+- Frontend deployment: dpl_ZbLi9bSKs1u82hrviF2J8oCT1S9c
+- API deployment: dpl_27J4aKbgf4WdYop8TWEFqANmDifZ
+
+Both migrations applied successfully to the dedicated hosted database. A cloud seed attempt exceeded Prisma's original transaction window and rolled back; a bounded 60-second timeout resolved it, and the fictional demo seed completed. Vercel initially selected the non-executable app.ts factory; moving it to application.ts and placing NestFactory directly in main.ts resolved runtime entrypoint detection. The corrected API health reports database connected and demo AI mode.
+
+Verification: public frontend HTTP 200, same-origin database health HTTP 200, direct demo login HTTP 201, lint and strict types passed, API build passed, and 21 API cases passed (14 integration plus 7 accounting/rules). The hosted Playwright workflow passed in 51.9 seconds, covering login, a fictional transaction write and reload, cleanup, deterministic copilot and logout/session revocation. Cloud cold starts need a longer assertion window than local tests; no Core Web Vitals or performance target is claimed.
+
+The README now publishes the deployment link and fixture credentials. Hosted registration/email reset delivery requires SMTP and remains unavailable without it; paid AI, billing and the broader roadmap remain incomplete. All local provider credentials, OIDC tokens, database files and traces are ignored and excluded from deployment uploads. Provider-installed local skills remain untracked. No paid services were activated.

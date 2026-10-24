@@ -1,5 +1,14 @@
 # Testing
 
+Hosted demonstration smoke test (manual, never pointed at a real financial-data environment):
+
+```powershell
+$env:LIVE_BASE_URL='https://finovaiq.vercel.app'
+pnpm exec playwright test --config playwright.production.config.ts
+```
+
+This verifies proxied database health, demo login, a fictional transaction write and reload, transaction cleanup, deterministic copilot, and logout/session revocation. It does not test SMTP or paid AI. The test removes its temporary transaction and records no real financial data.
+
 `pnpm test` runs seven accounting/rules tests and three frontend display/button tests. PostgreSQL tests are skipped unless explicitly enabled; a skip is not database verification.
 
 ```powershell

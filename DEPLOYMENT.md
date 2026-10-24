@@ -1,8 +1,20 @@
 # Deployment preparation
 
+## Hosted demonstration
+
+- Application: **https://finovaiq.vercel.app**
+- API health: https://finovaiq-api.vercel.app/api/v1/health
+- API documentation: https://finovaiq-api.vercel.app/api/docs
+- Frontend/API: Vercel Hobby, dedicated finovaiq and finovaiq-api projects.
+- Database: dedicated finovaiq-demo-db, Neon free_v3, Singapore region.
+
+The frontend uses a same-origin proxy to preserve Secure/HttpOnly/SameSite session cookies. The hosted copilot uses explicit deterministic demo mode; it does not call a paid AI provider. New-user email registration requires SMTP configuration and is not enabled for this shared demo. The published fixture account is verified and contains only fictional records. Existing unrelated Vercel projects were preserved.
+
+The NestJS executable entrypoint directly imports NestFactory. Its reusable configuration lives in application.ts, since Vercel otherwise detects app.ts as an executable entrypoint. The fictional seed uses a bounded 60-second transaction timeout for hosted database latency. Secrets and runtime state are excluded from uploads by .vercelignore and from Git by .gitignore.
+
 ## Vercel deployment request (2026-10-23)
 
-The owner has authorized Vercel hosting. Deployment requires authenticated Vercel access and a hosted PostgreSQL database; neither has been configured yet in this workspace. Local PostgreSQL cannot be used by Vercel. Do not publish a frontend configured to call localhost.
+The owner authorized Vercel hosting. Authenticated Vercel access and hosted PostgreSQL are now configured for the isolated demonstration described above. Local PostgreSQL cannot be used by Vercel. Do not publish a frontend configured to call localhost.
 
 Deploy two Vercel projects from this repository, with root directories `apps/api` (NestJS) and `apps/web` (Next.js). Each root contains a vercel.json with its framework and build commands. The API's existing `src/main.ts` entry point matches [Vercel's supported NestJS entry points](https://vercel.com/docs/frameworks/backend/nestjs). Use Node 24 and the committed pnpm lockfile. Include repository files outside each root for workspace dependency resolution.
 
@@ -14,7 +26,7 @@ For a public demonstration, use a separate database containing only synthetic re
 
 Verify the deployed `/api/v1/health` through the frontend, login, record persistence, logout and copilot before reporting the deployment as functional. No Vercel URL is claimed until a successful deployment and browser check. Do not purchase hosting/database plans without the owner's authorization.
 
-No production deployment or paid infrastructure has been created. Complete SECURITY.md and PROGRESS.md before a public financial-data release.
+No paid infrastructure has been created. Complete SECURITY.md and PROGRESS.md before a public release that accepts real financial data.
 
 Frontend: Vercel root apps/web, install using repository workspace/lockfile, build `pnpm --filter @finovaiq/web build`. Configure the server-only API_PROXY_URL to the backend HTTPS origin before building. Leave NEXT_PUBLIC_API_URL unset or `/api/v1`. Vercel manages its port; local web uses 3001.
 
