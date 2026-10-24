@@ -42,6 +42,14 @@ describe.skipIf(process.env.RUN_INTEGRATION !== "1")(
         });
       if (app) await app.close();
     });
+    it("redirects backend visitors to the configured frontend", async () => {
+      await auth()
+        .get("/?redirect=https://untrusted.example")
+        .expect(302)
+        .expect("Location", origin)
+        .expect("Cache-Control", "no-store");
+      await auth().get("/missing").expect(404);
+    });
     it("rejects unauthenticated access and untrusted origins", async () => {
       await auth().get("/api/v1/accounts").expect(401);
       await auth().post("/api/v1/auth/login").send({}).expect(403);

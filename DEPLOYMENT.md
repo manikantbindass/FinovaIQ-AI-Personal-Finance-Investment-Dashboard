@@ -5,6 +5,7 @@
 - Application: **https://finovaiq.vercel.app**
 - API health: https://finovaiq-api.vercel.app/api/v1/health
 - API documentation: https://finovaiq-api.vercel.app/api/docs
+- Opening the API root redirects to the configured frontend (`WEB_ORIGIN`); use the application link for the dashboard.
 - Frontend/API: Vercel Hobby, dedicated finovaiq and finovaiq-api projects.
 - Database: dedicated finovaiq-demo-db, Neon free_v3, Singapore region.
 

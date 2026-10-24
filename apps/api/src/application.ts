@@ -119,6 +119,12 @@ export function configureApp(app: INestApplication) {
   express.set("json replacer", (_key: string, value: unknown) =>
     typeof value === "bigint" ? value.toString() : value,
   );
+  // Opening the backend deployment should lead visitors to the web application.
+  // Use only server configuration, never a request parameter, as the destination.
+  express.get("/", (_req: Request, res: Response) => {
+    res.set("Cache-Control", "no-store");
+    res.redirect(302, origin);
+  });
   express.get("/api/v1/health", async (_req: Request, res: Response) => {
     try {
       await app.get(Db).$queryRaw`SELECT 1`;
