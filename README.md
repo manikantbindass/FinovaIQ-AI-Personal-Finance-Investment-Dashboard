@@ -1,10 +1,14 @@
 # FinovaIQ
 
+> **Try the live demo: [Open FinovaIQ](https://finovaiq.vercel.app/)**
+>
+> **Email:** `demo@finovaiq.test`  
+> **Password:** `FinovaDemo2026!`  
+> Click **Sign in to FinovaIQ**. The password is case-sensitive.
+>
+> This public, shared demo contains fictional records. Do not enter personal financial information.
+
 **Your Intelligent Financial Command Center**
-
-**Live demo: [finovaiq.vercel.app](https://finovaiq.vercel.app)**
-
-Demo login: **demo@finovaiq.test / FinovaDemo2026!**. This shared demonstration contains fictional records; do not enter personal financial information.
 
 A functional personal-finance workspace with an original responsive navy interface, light mode, a PostgreSQL-backed NestJS API, and an optional FastAPI/OpenAI service. The public demo is a development milestone, not a production-ready financial service. See [PROGRESS.md](PROGRESS.md) for the remaining roadmap.
 
